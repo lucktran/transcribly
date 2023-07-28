@@ -74,7 +74,7 @@ const Files = () => {
           {files.map(file => (
             <ul key={file.name} className="text-gray-900">
               {formatFileName(file.name)} 
-              <button onClick={() => downloadFile(file.name)} className="bg-green-600 hover:bg-green-500 text-white font-semibold py-1 px-2 ml-2 rounded">
+              <button onClick={() => downloadFile(file.name)} className="bg-indigo-600 hover:bg-green-500 text-white font-semibold py-1 px-2 ml-2 rounded">
                 Download
               </button>
               <button onClick={() => deleteFile(file.name)} className="bg-red-600 hover:bg-red-500 text-white font-semibold py-1 px-2 ml-2 rounded">

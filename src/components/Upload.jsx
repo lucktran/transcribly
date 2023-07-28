@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import supabase from '../supabase'; 
+import Example from './alerts/Success';  // import the  component
 
 const Upload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);  // add this line
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -13,6 +15,7 @@ const Upload = () => {
     try {
       if (!selectedFile) {
         setUploadStatus('Please select a file to upload.');
+        setIsSuccessOpen(false);  // update this line
         return;
       }
   
@@ -21,6 +24,7 @@ const Upload = () => {
       
       if (!userData) {
         setUploadStatus('Please login to upload files.');
+        setIsSuccessOpen(false);  // update this line
         return;
       }
       
@@ -34,12 +38,15 @@ const Upload = () => {
   
       if (error) {
         setUploadStatus('Error uploading file.');
+        setIsSuccessOpen(false);  // update this line
       } else {
         setUploadStatus('File uploaded successfully!');
         setSelectedFile(null);
+        setIsSuccessOpen(true);  // update this line
       }
     } catch (error) {
       setUploadStatus('Error uploading file.');
+      setIsSuccessOpen(false);  // update this line
     }
   };
   
@@ -55,7 +62,8 @@ const Upload = () => {
         </button>
       </div>
 
-      {uploadStatus && <p className="text-gray-900">{uploadStatus}</p>}
+      {isSuccessOpen && <Example onClose={() => setIsSuccessOpen(false)} />}
+      {uploadStatus && uploadStatus !== 'File uploaded successfully!' && <p className="text-gray-900">{uploadStatus}</p>}
     </div>
   );
 };

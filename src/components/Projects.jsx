@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../supabase';
+import Action from './alerts/Action';
+import Success from './alerts/Success';  
 
 const Projects = () => {
   const [files, setFiles] = useState([]);
+  const [transcribing, setTranscribing] = useState(false); 
+  const [transcriptionStatus, setTranscriptionStatus] = useState(false); 
 
   useEffect(() => {
     const getFiles = async () => {
@@ -34,6 +38,8 @@ const Projects = () => {
     getFiles();
   }, []);
   const transcribeFile = async (fileName) => {
+    setTranscribing(true);
+    setTranscriptionStatus(false);
     try {
       const response = await fetch('http://localhost:5000/transcribe', {
         method: 'POST',
@@ -48,6 +54,8 @@ const Projects = () => {
 
       if (response.ok) {
         console.log('File sent for transcription.');
+        setTranscribing(false);
+        setTranscriptionStatus(true);
       } else {
         console.error('Error sending file for transcription.');
       }
@@ -77,8 +85,10 @@ const Projects = () => {
           </ul>
         ))}
       </ul>
+      {transcribing && <Action />}
+      {transcriptionStatus && <Success onClose={() => setTranscriptionStatus(false)} />}
     </div>
-  );
+  );  
 };
 
 export default Projects;
